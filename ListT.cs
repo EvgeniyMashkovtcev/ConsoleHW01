@@ -1,18 +1,56 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
-namespace ConsoleHW01
+namespace ConsoleApp27
 {
-    internal class ListT<T>
+    internal class ListT<T> : IEnumerable<T>, IEnumerator<T> where T : IComparable<T>
     {
+        object IEnumerator.Current => Current;
+        public T Current
+        {
+            get
+            {
+                if (current != null)
+                    return current.value;
+                throw new InvalidOperationException();
+            }
+            private set { }
+        }
+        Node current = null;
         private Node root; // Первая нода
         private Node end;  // Последняя нода
         private int size;
+        public bool MoveNext()
+        {
+            if (root == null)
+                return false;
+            if (current == null)
+            {
+                current = root;
+                return true;
+            }
+            if (current.next != null)
+            {
+                current = current.next;
+                return true;
+            }
+            return false;
+        }
+        public void Reset()
+        {
+            current = null;
+        }
         public int Size { get { return size; } }
+
+
 
         public ListT()
         {
@@ -32,6 +70,18 @@ namespace ConsoleHW01
             end.next = new Node(value);
             end = end.next;
             size++;
+        }
+
+        public T GetValue(int index)
+        {
+            if (root == null)
+                throw new InvalidOperationException();
+            if (index < 0 || index >= size)
+                throw new IndexOutOfRangeException();
+            Node current = root;
+            for (int i = 0; i < index; i++)
+                current = current.next;
+            return current.value;
         }
 
         public void RemoveAt(int index)
@@ -127,6 +177,26 @@ namespace ConsoleHW01
             Console.WriteLine($"  Size = {size}");
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            Node current = root;
+            for (int i = 0; i < size; i++)
+            {
+                yield return current.value;
+                current = current.next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Dispose()
+        {
+
+        }
+
         private class Node
         {
             public T value;
@@ -144,11 +214,6 @@ namespace ConsoleHW01
                 this.value = value;
                 this.next = next;
             }
-        }
-
-        public static implicit operator ListT<T>(List<FamilyMember> v)
-        {
-            throw new NotImplementedException();
         }
     }
 
