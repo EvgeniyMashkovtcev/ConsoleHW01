@@ -4,48 +4,7 @@ namespace ConsoleHW01
 {
     internal class Program
     {
-        /*
-        class Bits
-        {
-            public Bits(byte b)
-            {
-                this.Value = b;
-            }
-            public byte Value { get; private set; } = 0;
-            public bool this[int index]
-            {
-                get
-                {
-                    if (index > 7 || index < 0)
-                        return false;
-                    return ((Value >> index) & 1) == 1;
-                }
-                set
-                {
-                    if (index > 7 || index < 0) return;
-                    if (value == true)
-                        Value = (byte)(Value | (1 << index));
-                    else
-                    {
-                        var mask = (byte)(1 << index);
-                        mask = (byte)(0xff ^ mask);
-                        Value &= (byte)(Value & mask);
-                    }
-                }
-
-            }
-
-            public static implicit operator byte(Bits b) => b.Value;
-
-
-            // Домашняя работа:
-            public static implicit operator Bits(long value) => new Bits((byte)value);
-
-            public static implicit operator Bits(int value) => new Bits((byte)value);
-
-            public static implicit operator Bits(byte value) => new Bits(value);
-        }
-        */
+        
         static void Main(string[] args)
         {
             int[,] labirynth = new int[,]
@@ -69,7 +28,6 @@ namespace ConsoleHW01
                 {1, 1, 1, 0, 1, 0, 1 },
                 {1, 1, 1, 0, 1, 1, 1 }
             };
-
 
 
             Console.WriteLine("Наличие выхода в первом лабиринте: " + HasExit(1, 3, labirynth));
@@ -229,6 +187,47 @@ namespace ConsoleHW01
         // daughter.PrintFamilyTree();
         */
 
-        
+     /*
+        class Bits
+        {
+            public Bits(byte b)
+            {
+                this.Value = b;
+            }
+            public byte Value { get; private set; } = 0;
+            public bool this[int index]
+            {
+                get
+                {
+                    if (index > 7 || index < 0)
+                        return false;
+                    return ((Value >> index) & 1) == 1;
+                }
+                set
+                {
+                    if (index > 7 || index < 0) return;
+                    if (value == true)
+                        Value = (byte)(Value | (1 << index));
+                    else
+                    {
+                        var mask = (byte)(1 << index);
+                        mask = (byte)(0xff ^ mask);
+                        Value &= (byte)(Value & mask);
+                    }
+                }
+
+            }
+
+            public static implicit operator byte(Bits b) => b.Value;
+
+
+            // Домашняя работа:
+            public static implicit operator Bits(long value) => new Bits((byte)value);
+
+            public static implicit operator Bits(int value) => new Bits((byte)value);
+
+            public static implicit operator Bits(byte value) => new Bits(value);
+        }
+        */   
     }  
 }
