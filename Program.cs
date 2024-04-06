@@ -7,7 +7,18 @@ namespace ConsoleHW01
         
         static void Main(string[] args)
         {
-            int[,] labirynth = new int[,]
+            
+
+
+
+        }
+
+
+
+
+
+    /*
+        int[,] labirynth = new int[,]
             {
                 {1, 1, 1, 1, 1, 1, 1 },
                 {1, 0, 0, 0, 0, 0, 1 },
@@ -18,8 +29,8 @@ namespace ConsoleHW01
                 {1, 1, 1, 0, 1, 1, 1 }
             };
 
-            int[,] labirynth2 = new int[,]
-            {
+        int[,] labirynth2 = new int[,]
+        {
                 {1, 1, 1, 1, 0, 1, 1 },
                 {1, 0, 0, 0, 0, 0, 1 },
                 {1, 0, 1, 1, 1, 0, 1 },
@@ -27,48 +38,27 @@ namespace ConsoleHW01
                 {1, 1, 0, 0, 0, 0, 1 },
                 {1, 1, 1, 0, 1, 0, 1 },
                 {1, 1, 1, 0, 1, 1, 1 }
-            };
+        };
 
 
-            Console.WriteLine("Наличие выхода в первом лабиринте: " + HasExit(1, 3, labirynth));
-            Console.WriteLine("Количество выходов в первом лабиринте: " + CountExits(labirynth));
+        Console.WriteLine("Количество выходов в первом лабиринте: " + HasExit(1, 3, labirynth));
+            // Print(labirynth);
 
             Console.WriteLine();
 
-            Console.WriteLine("Наличие выхода во втором лабиринте : " + HasExitRecursive(1, 3, labirynth2));
-            Console.WriteLine("Количество выходов во втором лабиринте : " + CountExits(labirynth2));
+            Console.WriteLine("Количество выходов во втором лабиринте : " + HasExitRecursive(1, 3, labirynth2));
+            // Print(labirynth2);
+        */
 
-        }
-
-        static int CountExits(int[,] lab)
-        {
-            int exits = 0;
-
-            for (int i = 0; i < lab.GetLength(0); i++)
-            {
-                if (lab[i, 0] == 0)
-                    exits++;
-                if (lab[i, lab.GetLength(1) - 1] == 0)
-                    exits++;
-            }
-            
-            for (int j = 0; j < lab.GetLength(1); j++)
-            {
-                if (lab[0, j] == 0)
-                    exits++;
-                if (lab[lab.GetLength(0) - 1, j] == 0)
-                    exits++;
-            }
-
-            return exits;
-        }
-
-        static bool HasExit(int i, int j, int[,] lab)
+        /*
+        static int HasExit(int i, int j, int[,] lab)
         {
             Stack<Tuple<int, int>> stack = new Stack<Tuple<int, int>>();
 
             if (lab[i, j] == 0)
                 stack.Push(new(i, j));
+
+            int count = 0;
 
             while (stack.Count > 0)
             {
@@ -79,63 +69,48 @@ namespace ConsoleHW01
                     continue;
                 if (lab[current.Item1, current.Item2] == 1 || lab[current.Item1, current.Item2] == 2)
                     continue;
-                if (lab.GetLength(0) - 1 == current.Item1 || lab.GetLength(1) - 1 == current.Item2 || current.Item1 == 0 || current.Item2 == 0)
-                    return true;
                 lab[current.Item1, current.Item2] = 2;
+                if (lab.GetLength(0) - 1 == current.Item1 || lab.GetLength(1) - 1 == current.Item2 || current.Item1 == 0 || current.Item2 == 0)
+                {
+                    count++;
+                    continue;
+                }
+                
 
                 stack.Push(new(current.Item1 + 1, current.Item2));
                 stack.Push(new(current.Item1 - 1, current.Item2));
                 stack.Push(new(current.Item1, current.Item2 + 1));
                 stack.Push(new(current.Item1, current.Item2 - 1));
             }
-            return false;
+            return count;
         }
 
 
-        static bool HasExitRecursive(int i, int j, int[,] lab)
+        static int HasExitRecursive(int i, int j, int[,] lab)
         {
             if (lab[i, j] != 0)
-                return false;
-            
-            int[,] originalLab = (int[,])lab.Clone();
-            bool hasExit = HasExitRec(i, j, lab);
-            
-            for (int row = 0; row < lab.GetLength(0); row++)
-            {
-                for (int col = 0; col < lab.GetLength(1); col++)
-                {
-                    lab[row, col] = originalLab[row, col];
-                }
-            }
-            return hasExit;
+                return 0;
+            return HasExitRec(i, j, lab);
         }
 
-        static bool HasExitRec(int i, int j, int[,] lab)
+        static int HasExitRec(int i, int j, int[,] lab)
         {
-            int originalLab = lab[i, j];
             lab[i, j] = 2;
+            int count = 0;
+
+            if (i + 1 < lab.GetLength(0) && lab[i + 1, j] == 0)
+                count += HasExitRec(i + 1, j, lab);
+            if (i - 1 >= 0 && lab[i - 1, j] == 0)
+                count += HasExitRec(i - 1, j, lab);
+            if (j + 1 < lab.GetLength(1) && lab[i, j + 1] == 0)
+                count += HasExitRec(i, j + 1, lab);
+            if (j - 1 >= 0 && lab[i, j - 1] == 0)
+                count += HasExitRec(i, j - 1, lab);
 
             if (lab.GetLength(0) - 1 == i || lab.GetLength(1) - 1 == j || i == 0 || j == 0)
-                return true;
+                return count + 1;
 
-            bool exit = false;
-
-            if (lab[i + 1, j] == 0)
-                if (HasExitRec(i + 1, j, lab))
-                    exit = true;
-            if (lab[i - 1, j] == 0)
-                if (HasExitRec(i - 1, j, lab))
-                    exit = true;
-            if (lab[i, j + 1] == 0)
-                if (HasExitRec(i, j + 1, lab))
-                    exit = true;
-            if (lab[i, j - 1] == 0)
-                if (HasExitRec(i, j - 1, lab))
-                    exit = true;
-
-            lab[i, j] = originalLab;
-
-            return exit;
+            return count;
         }
 
         public static void Print(int[,] array)
@@ -150,11 +125,7 @@ namespace ConsoleHW01
             }
             Console.WriteLine();
         }
-
-
-
-
-
+        */
 
         /*
         Bits bitsFromLong = 12345L;
