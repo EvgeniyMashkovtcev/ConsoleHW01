@@ -18,6 +18,7 @@ namespace ConsoleHW01
             // int[] array2 = { 22, 7, 15, 3, 5, 1, 6, 0, 0 };
             // int[] array3 = { 0, 40, 45, 6, 100, 8 };
             // int[] array4 = { 1, 5, 44, 7, 11, 9, 3, 15, 17 };
+
             int reqSum = 8;
 
             FindTriplets(array, reqSum);
