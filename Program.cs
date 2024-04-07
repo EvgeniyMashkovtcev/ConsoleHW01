@@ -4,51 +4,100 @@ namespace ConsoleHW01
 {
     internal class Program
     {
-        
+
         static void Main(string[] args)
         {
-            
+            /*
+            Дан массив и число. Найдите три числа в массиве сумма которых равна искомому числу. 
+            Подсказка: если взять первое число в массиве, 
+            можно ли найти в оставшейся его части два числа равных по сумме первому.
+            */
+
+            int[] array = { 1, 2, 4, 8, 3, 4, 5, 6, 9, 11, 14, 10, 0, 12, 8 };
+            // int[] array1 = { 22, 7, 7, 3, 1, 8, 6, 9, 11, 14, 0, 0 };
+            // int[] array2 = { 22, 7, 15, 3, 5, 1, 6, 0, 0 };
+            // int[] array3 = { 0, 40, 45, 6, 100, 8 };
+            // int[] array4 = { 1, 5, 44, 7, 11, 9, 3, 15, 17 };
+            int reqSum = 8;
+
+            FindTriplets(array, reqSum);
+            // FindTriplets(array1, reqSum);
+            // FindTriplets(array2, reqSum);
+            // FindTriplets(array3, reqSum);
+            // FindTriplets(array4, reqSum);
 
 
 
+        }
+
+        static void FindTriplets(int[] array, int reqSum)
+        {
+            Array.Sort(array);
+
+
+            for (int i = 0; i < array.Length - 2; i++)
+            {
+                int left = i + 1;
+                int right = array.Length - 1;
+                int currentSum = reqSum - array[i];
+
+                while (left < right)
+                {
+                    if (array[left] + array[right] == currentSum)
+                    {
+                        Console.WriteLine($"Три числа: {array[i]}, {array[left]}, {array[right]}");
+                        return;
+                    }
+                    else if (array[left] + array[right] < currentSum)
+                    {
+                        left++;
+                    }
+                    else
+                    {
+                        right--;
+                    }
+                }
+            }
+
+            Console.WriteLine("Подходящих трех чисел нет");
         }
 
 
 
 
 
-    /*
-        int[,] labirynth = new int[,]
+        /*
+            int[,] labirynth = new int[,]
+                {
+                    {1, 1, 1, 1, 1, 1, 1 },
+                    {1, 0, 0, 0, 0, 0, 1 },
+                    {1, 0, 1, 1, 1, 0, 1 },
+                    {0, 0, 0, 0, 1, 0, 1 },
+                    {1, 1, 0, 0, 0, 0, 1 },
+                    {1, 1, 1, 0, 1, 0, 1 },
+                    {1, 1, 1, 0, 1, 1, 1 }
+                };
+
+            int[,] labirynth2 = new int[,]
             {
-                {1, 1, 1, 1, 1, 1, 1 },
-                {1, 0, 0, 0, 0, 0, 1 },
-                {1, 0, 1, 1, 1, 0, 1 },
-                {0, 0, 0, 0, 1, 0, 1 },
-                {1, 1, 0, 0, 0, 0, 1 },
-                {1, 1, 1, 0, 1, 0, 1 },
-                {1, 1, 1, 0, 1, 1, 1 }
+                    {1, 1, 1, 1, 0, 1, 1 },
+                    {1, 0, 0, 0, 0, 0, 1 },
+                    {1, 0, 1, 1, 1, 0, 1 },
+                    {0, 0, 0, 0, 1, 0, 0 },
+                    {1, 1, 0, 0, 0, 0, 1 },
+                    {1, 1, 1, 0, 1, 0, 1 },
+                    {1, 1, 1, 0, 1, 1, 1 }
             };
 
-        int[,] labirynth2 = new int[,]
-        {
-                {1, 1, 1, 1, 0, 1, 1 },
-                {1, 0, 0, 0, 0, 0, 1 },
-                {1, 0, 1, 1, 1, 0, 1 },
-                {0, 0, 0, 0, 1, 0, 0 },
-                {1, 1, 0, 0, 0, 0, 1 },
-                {1, 1, 1, 0, 1, 0, 1 },
-                {1, 1, 1, 0, 1, 1, 1 }
-        };
 
+            Console.WriteLine("Количество выходов в первом лабиринте: " + HasExit(1, 3, labirynth));
+                // Print(labirynth);
 
-        Console.WriteLine("Количество выходов в первом лабиринте: " + HasExit(1, 3, labirynth));
-            // Print(labirynth);
+                Console.WriteLine();
 
-            Console.WriteLine();
-
-            Console.WriteLine("Количество выходов во втором лабиринте : " + HasExitRecursive(1, 3, labirynth2));
-            // Print(labirynth2);
-        */
+                Console.WriteLine("Количество выходов во втором лабиринте : " + HasExitRecursive(1, 3, labirynth2));
+                // Print(labirynth2);
+            */
 
         /*
         static int HasExit(int i, int j, int[,] lab)
@@ -75,7 +124,7 @@ namespace ConsoleHW01
                     count++;
                     continue;
                 }
-                
+
 
                 stack.Push(new(current.Item1 + 1, current.Item2));
                 stack.Push(new(current.Item1 - 1, current.Item2));
@@ -158,47 +207,47 @@ namespace ConsoleHW01
         // daughter.PrintFamilyTree();
         */
 
-     /*
-        class Bits
-        {
-            public Bits(byte b)
-            {
-                this.Value = b;
-            }
-            public byte Value { get; private set; } = 0;
-            public bool this[int index]
-            {
-                get
-                {
-                    if (index > 7 || index < 0)
-                        return false;
-                    return ((Value >> index) & 1) == 1;
-                }
-                set
-                {
-                    if (index > 7 || index < 0) return;
-                    if (value == true)
-                        Value = (byte)(Value | (1 << index));
-                    else
-                    {
-                        var mask = (byte)(1 << index);
-                        mask = (byte)(0xff ^ mask);
-                        Value &= (byte)(Value & mask);
-                    }
-                }
+        /*
+           class Bits
+           {
+               public Bits(byte b)
+               {
+                   this.Value = b;
+               }
+               public byte Value { get; private set; } = 0;
+               public bool this[int index]
+               {
+                   get
+                   {
+                       if (index > 7 || index < 0)
+                           return false;
+                       return ((Value >> index) & 1) == 1;
+                   }
+                   set
+                   {
+                       if (index > 7 || index < 0) return;
+                       if (value == true)
+                           Value = (byte)(Value | (1 << index));
+                       else
+                       {
+                           var mask = (byte)(1 << index);
+                           mask = (byte)(0xff ^ mask);
+                           Value &= (byte)(Value & mask);
+                       }
+                   }
 
-            }
+               }
 
-            public static implicit operator byte(Bits b) => b.Value;
+               public static implicit operator byte(Bits b) => b.Value;
 
 
-            // Домашняя работа:
-            public static implicit operator Bits(long value) => new Bits((byte)value);
+               // Домашняя работа:
+               public static implicit operator Bits(long value) => new Bits((byte)value);
 
-            public static implicit operator Bits(int value) => new Bits((byte)value);
+               public static implicit operator Bits(int value) => new Bits((byte)value);
 
-            public static implicit operator Bits(byte value) => new Bits(value);
-        }
-        */   
-    }  
+               public static implicit operator Bits(byte value) => new Bits(value);
+           }
+           */
+    }
 }
