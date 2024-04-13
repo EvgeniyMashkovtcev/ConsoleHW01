@@ -10,67 +10,164 @@ namespace ConsoleHW01
 {
     class CalculatorEventArgs : EventArgs
     {
-        public double answer;
+        public double Answer { get; set; }
     }
     class Calculator
     {
         public event EventHandler<CalculatorEventArgs> Result;
-        private double result = 0;
-        Stack<double> results = new Stack<double>();
 
-        private double result1 = 1;
-        Stack<double> results1 = new Stack<double>();
+        private double doubleResult = 0.0;
+        private int intResult = 0;
+        private double doubleResult1 = 1.0;
+
+        private Stack<double> doubleResults = new Stack<double>();
+        private Stack<int> intResults = new Stack<int>();
+        private Stack<double> doubleResults1 = new Stack<double>();
 
         private void StartEvent()
         {
-            Result?.Invoke(this, new CalculatorEventArgs { answer = result });
+            Result?.Invoke(this, new CalculatorEventArgs { Answer = doubleResult });
         }
         private void StartEvent1()
         {
-            Result?.Invoke(this, new CalculatorEventArgs { answer = result1 });
+            Result?.Invoke(this, new CalculatorEventArgs { Answer = doubleResult1 });
         }
 
+        private void StartEvent(double result)
+        {
+            doubleResult = result;
+            StartEvent();
+        }
+        private void StartEvent(int result)
+        {
+            doubleResult = result;
+            StartEvent();
+        }
+        private void StartEvent1(double result1)
+        {
+            doubleResult1 = result1;
+            StartEvent1();
+        }
+
+
+        public static Calculator operator +(Calculator calc, int value)
+        {
+            calc.Add(value);
+            return calc;
+        }
+
+        public static Calculator operator +(Calculator calc, double value)
+        {
+            calc.Add(value);
+            return calc;
+        }
+
+        public static Calculator operator -(Calculator calc, int value)
+        {
+            calc.Sub(value);
+            return calc;
+        }
+
+        public static Calculator operator -(Calculator calc, double value)
+        {
+            calc.Sub(value);
+            return calc;
+        }
+
+        public static Calculator operator *(Calculator calc, int value)
+        {
+            calc.Mul(value);
+            return calc;
+        }
+
+        public static Calculator operator *(Calculator calc, double value)
+        {
+            calc.Mul(value);
+            return calc;
+        }
+
+        public static Calculator operator /(Calculator calc, int value)
+        {
+            calc.Div(value);
+            return calc;
+        }
+
+        public static Calculator operator /(Calculator calc, double value)
+        {
+            calc.Div(value);
+            return calc;
+        }
+        public void Add(int value)
+        {
+            intResults.Push(intResult);
+            intResult += value;
+            StartEvent(intResult);
+        }
         public void Add(double value)
         {
-            results.Push(result);
-            result += value;
-            StartEvent(); 
+            doubleResults.Push(doubleResult);
+            doubleResult += value;
+            StartEvent(doubleResult);
+        }
+        public void Sub(int value)
+        {
+            intResults.Push(intResult);
+            intResult -= value;
+            StartEvent(intResult);
         }
         public void Sub(double value)
         {
-            results.Push(result);
-            result -= value;
-            StartEvent(); 
+            doubleResults.Push(doubleResult);
+            doubleResult -= value;
+            StartEvent(doubleResult);
+        }
+        public void Mul(int value)
+        {
+            doubleResults1.Push(doubleResult1);
+            doubleResult1 *= value;
+            StartEvent1(doubleResult1);
         }
         public void Mul(double value)
         {
-            results1.Push(result1);
-            result1 *= value;
-            StartEvent1();
+            doubleResults1.Push(doubleResult1);
+            doubleResult1 *= value;
+            StartEvent1(doubleResult1);
+        }
+        public void Div(int value)
+        {
+            doubleResults1.Push(doubleResult1);
+            doubleResult1 /= value;
+            StartEvent1(doubleResult1);
         }
         public void Div(double value)
         {
-            results1.Push(result1);
-            result1 /= value;
-            StartEvent1(); 
+            doubleResults1.Push(doubleResult1);
+            doubleResult1 /= value;
+            StartEvent1(doubleResult1);
         }
+
         public void Cancel()
         {
-            if (results.Count > 0)
+            if (intResults.Count > 0)
             {
-                result = results.Pop();
-                StartEvent();
+                intResult = intResults.Pop();
+                StartEvent(intResult);
+            }
+            else if (doubleResults.Count > 0)
+            {
+                doubleResult = doubleResults.Pop();
+                StartEvent(doubleResult);
             }
         }
+
         public void Clear()
         {
-            result = 0;
-            results.Clear();
-        }
-        public void Clear1()
-        {
-            result1 = 1;
-            results1.Clear();
+            doubleResult = 0.0;
+            doubleResults.Clear();
+            intResult = 0;
+            intResults.Clear();
+            doubleResult1 = 1.0;
+            doubleResults1.Clear();
         }
     }
 }

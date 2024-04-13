@@ -69,13 +69,12 @@ namespace ConsoleHW01
                         break;
                 }
                 calculator.Clear();
-                calculator.Clear1();
             }
         }
 
         private static void Calculator_Result(object? sender, CalculatorEventArgs e)
         {
-            Console.WriteLine($"Результат: {e.answer}");
+            Console.WriteLine($"Результат: {e.Answer}");
         }
     }
 
