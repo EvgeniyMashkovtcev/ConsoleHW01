@@ -24,7 +24,6 @@ namespace ConsoleHW01
                     break;
                 }
 
-                
                 char operation = input[0];
 
                 Console.WriteLine("Введите первое число:");
@@ -42,7 +41,6 @@ namespace ConsoleHW01
                     Console.WriteLine("Ошибка: Некорректный ввод числа.");
                     continue;
                 }
-
 
                 switch (operation)
                 {
