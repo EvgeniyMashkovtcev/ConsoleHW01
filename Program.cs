@@ -9,43 +9,54 @@ namespace ConsoleHW01
     {
         static void Main(string[] args)
         {
+            string path = "C:\\Users\\User\\Desktop\\Test";
+            string format = "txt";
+            string text = "Hello";
 
-            FindText("C:\\Users\\User\\Desktop\\Testt", "txt", "Hello");
 
+            FindText(path, format, text);
 
+            Console.ReadLine();
 
-            
         }
 
-        public static bool FindText(string path, string format, string text)
+        public static void FindText(string path, string format, string text)
         {
             bool textFound = false;
 
             if (!Directory.Exists(path))
             {
                 Console.WriteLine("Каталог не существует");
-                return textFound;
+                return;
             }
 
             string[] files = Directory.GetFiles(path, $"*.{format}");
 
+            Task[] tasks = new Task[files.Length];
+            int index = 0;
             foreach (string file in files)
             {
-                string fileContent = File.ReadAllText(file);
-
-                if (fileContent.Contains(text))
+                tasks[index] = new Task(() =>
                 {
-                    textFound = true;
-                    Console.WriteLine($"'{text}' найден в файле: {file}");
-                }
+                    string fileContent = File.ReadAllText(file);
+
+                    if (fileContent.Contains(text))
+                    {
+                        textFound = true;
+                        Console.WriteLine($"'{text}' найден в файле: {file}");
+                    }
+                });
+                tasks[index].Start();
+                index++;
             }
+
+            Task.WaitAll(tasks);
 
             if (!textFound)
             {
                 Console.WriteLine($"'{text}' с форматом '{format}' в каталоге {path} НЕ найден");
             }
 
-            return textFound;
         }
 
     }
